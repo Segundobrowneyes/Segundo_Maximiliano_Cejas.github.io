@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Segundo Maximiliano Cejas — Técnico en Electrónica</title>
+<meta name="description" content="Segundo Maximiliano Cejas — Técnico Superior en Electrónica, Profesor en Disciplinas Industriales.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0c1526;
+    --bg-deep: #08101d;
+    --panel: #101c33;
+    --grid: rgba(139,168,214,0.08);
+    --grid-strong: rgba(139,168,214,0.16);
+    --ink: #e8eef8;
+    --ink-dim: #93a6c4;
+    --ink-faint: #5c6f8f;
+    --accent: #c9834a;
+    --accent-soft: rgba(201,131,74,0.15);
+    --led: #52d68a;
+    --rule: rgba(139,168,214,0.22);
+    --font-display: 'Big Shoulders Display', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+    --radius: 2px;
+    transition: --accent 0.3s;
+  }
+  [data-trace="verde"]{ --accent:#52d68a; --accent-soft: rgba(82,214,138,0.15); }
+  [data-trace="celeste"]{ --accent:#5aa9e6; --accent-soft: rgba(90,169,230,0.15); }
+  [data-trace="cobre"]{ --accent:#c9834a; --accent-soft: rgba(201,131,74,0.15); }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 32px 32px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 32px 32px,
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.6;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  ::selection{background:var(--accent-soft); color:var(--ink);}
+
+  .wrap{max-width:960px; margin:0 auto; padding:0 24px;}
+
+  /* ---------- NAV ---------- */
+  header.topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(8,16,29,0.86);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--rule);
+  }
+  .topbar-inner{
+    max-width:960px; margin:0 auto; padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .brand{
+    font-family:var(--font-mono); font-size:13px; letter-spacing:0.08em;
+    color:var(--ink-dim); text-decoration:none; white-space:nowrap;
+  }
+  .brand b{color:var(--ink);}
+  nav.links{display:flex; gap:22px; flex-wrap:wrap;}
+  nav.links a{
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.06em;
+    text-decoration:none; color:var(--ink-faint); text-transform:uppercase;
+    transition:color .2s;
+  }
+  nav.links a:hover{color:var(--accent);}
+  .trace-picker{display:flex; gap:6px; align-items:center; margin-left:8px;}
+  .trace-picker span{font-family:var(--font-mono); font-size:9px; color:var(--ink-faint); margin-right:2px;}
+  .swatch{
+    width:12px; height:12px; border-radius:50%; cursor:pointer;
+    border:1.5px solid rgba(255,255,255,0.25);
+  }
+  .swatch[data-c="cobre"]{background:#c9834a;}
+  .swatch[data-c="verde"]{background:#52d68a;}
+  .swatch[data-c="celeste"]{background:#5aa9e6;}
+  .swatch.active{border-color:#fff;}
+
+  @media (max-width:720px){
+    nav.links{display:none;}
+  }
+
+  /* ---------- FRAMED SHEET ---------- */
+  .sheet{
+    position:relative;
+    border:1px solid var(--rule);
+    background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
+    padding:44px 36px;
+    margin:0 0 20px 0;
+  }
+  .sheet::before, .sheet::after,
+  .corner-tl, .corner-br{
+    content:''; position:absolute; width:14px; height:14px;
+    border-color:var(--accent); opacity:0.85;
+  }
+  .sheet::before{ top:-1px; left:-1px; border-top:2px solid var(--accent); border-left:2px solid var(--accent); }
+  .sheet::after{ top:-1px; right:-1px; border-top:2px solid var(--accent); border-right:2px solid var(--accent); }
+  .corner-tl{ bottom:-1px; left:-1px; border-bottom:2px solid var(--accent); border-left:2px solid var(--accent); }
+  .corner-br{ bottom:-1px; right:-1px; border-bottom:2px solid var(--accent); border-right:2px solid var(--accent); }
+
+  .eyebrow{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:0.12em;
+    color:var(--accent); text-transform:uppercase; margin-bottom:14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::after{content:''; flex:1; height:1px; background:var(--rule);}
+
+  /* ---------- HERO ---------- */
+  .hero{padding-top:64px;}
+  .hero .sheet{padding:56px 40px 40px;}
+  .status-line{
+    font-family:var(--font-mono); font-size:12px; color:var(--ink-dim);
+    letter-spacing:0.06em; margin-bottom:22px; display:flex; align-items:center; gap:8px;
+  }
+  .led{
+    width:8px; height:8px; border-radius:50%; background:var(--led);
+    box-shadow:0 0 8px var(--led); animation:blink 2.4s infinite;
+  }
+  @keyframes blink{0%,100%{opacity:1;} 50%{opacity:0.35;}}
+  h1.name{
+    font-family:var(--font-display); font-weight:900;
+    font-size:clamp(40px, 7vw, 78px); line-height:0.95;
+    letter-spacing:-0.01em; text-transform:uppercase; color:var(--ink);
+  }
+  h1.name span{color:var(--accent);}
+  .role{
+    font-family:var(--font-mono); font-size:clamp(13px,2vw,16px);
+    color:var(--ink-dim); margin-top:14px; letter-spacing:0.03em;
+  }
+  .tagline{
+    margin-top:28px; max-width:560px; font-size:18px; color:var(--ink);
+    border-left:2px solid var(--accent); padding-left:18px;
+  }
+  .hero-meta{
+    margin-top:36px; display:flex; gap:28px; flex-wrap:wrap;
+    font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint);
+  }
+  .hero-meta div b{display:block; color:var(--ink-dim); font-size:9px; letter-spacing:0.1em; margin-bottom:4px; text-transform:uppercase;}
+
+  /* ---------- SECTIONS ---------- */
+  section{scroll-margin-top:80px; padding-top:20px;}
+  h2.section-title{
+    font-family:var(--font-display); font-weight:700; text-transform:uppercase;
+    font-size:clamp(24px,3.4vw,32px); margin-bottom:22px; letter-spacing:0.01em;
+  }
+  .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* about */
+  .about-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:36px;}
+  @media (max-width:700px){.about-grid{grid-template-columns:1fr;}}
+  .about-grid p{color:var(--ink-dim); margin-bottom:14px;}
+  .about-grid p:first-child{color:var(--ink); font-size:17px;}
+  .facts{font-family:var(--font-mono); font-size:12.5px; color:var(--ink-dim); border-top:1px solid var(--rule);}
+  .facts div{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--rule);}
+  .facts div b{color:var(--ink); font-weight:500;}
+
+  /* experience */
+  .job{
+    display:grid; grid-template-columns:150px 1fr; gap:24px;
+    padding:22px 0; border-bottom:1px solid var(--rule);
+  }
+  .job:last-child{border-bottom:none;}
+  .job-date{font-family:var(--font-mono); font-size:11.5px; color:var(--accent); letter-spacing:0.04em; padding-top:2px;}
+  .job-company{font-family:var(--font-display); font-weight:700; font-size:20px; text-transform:uppercase; margin-bottom:2px;}
+  .job-role{font-family:var(--font-mono); font-size:12px; color:var(--ink-dim); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.03em;}
+  .job-desc{color:var(--ink-dim); font-size:14.5px; max-width:600px;}
+  @media (max-width:600px){.job{grid-template-columns:1fr; gap:6px;}}
+
+  /* education */
+  .edu-row{display:flex; justify-content:space-between; gap:20px; padding:18px 0; border-bottom:1px solid var(--rule); flex-wrap:wrap;}
+  .edu-row:last-child{border-bottom:none;}
+  .edu-title{font-weight:600; font-size:16px;}
+  .edu-sub{font-family:var(--font-mono); font-size:12px; color:var(--ink-dim); margin-top:4px;}
+  .edu-year{font-family:var(--font-mono); font-size:12px; color:var(--accent); white-space:nowrap;}
+
+  /* skills */
+  .skill-groups{display:grid; grid-template-columns:repeat(2,1fr); gap:28px;}
+  @media (max-width:640px){.skill-groups{grid-template-columns:1fr;}}
+  .skill-group h3{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.1em;
+    color:var(--accent); text-transform:uppercase; margin-bottom:12px;
+  }
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    font-family:var(--font-mono); font-size:12px; color:var(--ink-dim);
+    border:1px solid var(--rule); padding:6px 10px; border-radius:2px;
+    position:relative;
+  }
+  .chip::before{content:'•'; color:var(--accent); margin-right:6px;}
+
+  /* projects */
+  .project-card{
+    border:1px solid var(--rule); padding:26px; display:flex; flex-direction:column; gap:10px;
+  }
+  .project-title{font-family:var(--font-display); font-weight:700; font-size:22px; text-transform:uppercase;}
+  .project-tag{font-family:var(--font-mono); font-size:10.5px; color:var(--accent); letter-spacing:0.08em; text-transform:uppercase;}
+  .project-desc{color:var(--ink-dim); font-size:14.5px; max-width:560px;}
+  .project-link{
+    font-family:var(--font-mono); font-size:12px; color:var(--ink); text-decoration:none;
+    border-bottom:1px solid var(--accent); width:fit-content; margin-top:6px;
+  }
+
+  /* contact */
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
+  @media (max-width:640px){.contact-grid{grid-template-columns:1fr;}}
+  .contact-item b{display:block; font-family:var(--font-mono); font-size:10px; letter-spacing:0.1em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:6px;}
+  .contact-item a, .contact-item span{font-size:17px; color:var(--ink); text-decoration:none;}
+  .contact-item a:hover{color:var(--accent);}
+
+  /* title block (signature) */
+  .titleblock{
+    margin-top:40px; margin-bottom:60px;
+    border:1px solid var(--rule);
+    font-family:var(--font-mono); font-size:11px;
+    display:grid; grid-template-columns:repeat(4,1fr);
+  }
+  .tb-cell{padding:12px 14px; border-right:1px solid var(--rule); border-bottom:1px solid var(--rule);}
+  .tb-cell:nth-child(4n){border-right:none;}
+  .tb-cell b{display:block; color:var(--ink-faint); font-size:9px; letter-spacing:0.08em; margin-bottom:5px;}
+  .tb-cell span{color:var(--ink-dim);}
+  @media (max-width:640px){.titleblock{grid-template-columns:repeat(2,1fr);}}
+
+  footer{
+    text-align:center; padding:30px 0 50px; font-family:var(--font-mono);
+    font-size:11px; color:var(--ink-faint); letter-spacing:0.05em;
+  }
+</style>
+</head>
+<body data-trace="cobre">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="#" class="brand"><b>S.CEJAS</b> // ELECTRÓNICA</a>
+    <nav class="links">
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#experiencia">Experiencia</a>
+      <a href="#educacion">Educación</a>
+      <a href="#skills">Skills</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="trace-picker">
+      <span>TRAZA</span>
+      <div class="swatch active" data-c="cobre"></div>
+      <div class="swatch" data-c="verde"></div>
+      <div class="swatch" data-c="celeste"></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="sheet">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="status-line"><span class="led"></span> DISPONIBILIDAD: FULL TIME — EN LÍNEA</div>
+      <h1 class="name">Segundo<br>Maximiliano <span>Cejas</span></h1>
+      <div class="role">TÉCNICO SUPERIOR EN ELECTRÓNICA · PROFESOR EN DISCIPLINAS INDUSTRIALES</div>
+      <p class="tagline">Padre de dos, técnico de oficio: en casa o en el banco de trabajo, mi especialidad es encontrarle la vuelta a lo que no funciona.</p>
+      <div class="hero-meta">
+        <div><b>Ubicación</b>Malvinas Argentinas, Buenos Aires, AR</div>
+        <div><b>Idiomas</b>Español · Inglés B1 · Portugués intermedio</div>
+        <div><b>Licencia</b>Conducir B2</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE MI -->
+  <section id="sobre-mi">
+    <h2 class="section-title reveal">Sobre mí</h2>
+    <div class="sheet reveal">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="eyebrow">U1 · PERFIL</div>
+      <div class="about-grid">
+        <div>
+          <p>Más de una década trabajando en redes de telecomunicaciones y electrónica de campo: desde la puesta en marcha de equipos de última milla para operadores móviles, hasta la reparación a nivel componente de fuentes industriales.</p>
+          <p>En paralelo, sigo de cerca el mundo de las plataformas embebidas (Arduino, Raspberry Pi, PIC, ATMEL) por el mismo motivo que me llevó a la electrónica: entender cómo funciona algo hasta poder arreglarlo, mejorarlo o construirlo de nuevo.</p>
+        </div>
+        <div class="facts">
+          <div><span>Formación</span><b>Técnico Sup. en Electrónica</b></div>
+          <div><span>Docencia</span><b>Disciplinas Industriales</b></div>
+          <div><span>Especialidad</span><b>Redes / última milla</b></div>
+          <div><span>Disponibilidad</span><b>Full time</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCIA -->
+  <section id="experiencia">
+    <h2 class="section-title reveal">Experiencia laboral</h2>
+    <div class="sheet reveal">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="eyebrow">U2 · TRAYECTORIA</div>
+
+      <div class="job">
+        <div class="job-date">AGO 2017 — OCT 2020</div>
+        <div>
+          <div class="job-company">SELIN S.A.</div>
+          <div class="job-role">Puesta en marcha de equipos (PEM) · Analista de red / Help Desk</div>
+          <div class="job-desc">Servicio interno de puesta en marcha a nivel país para Movistar Argentina. Lectura y análisis de documentación de red, soporte de troubleshooting a técnicos en campo, seguimiento de enlaces y configuración de equipos de última milla (Huawei ATN910/950, Cisco AR920) para puesta en servicio de BBU 2G/3G/4G y SRAN. Armado de anillos de transmisión (SDH, DWDM) y confección de informes de ingeniería.</div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-date">ENE 2016 — ENE 2017</div>
+        <div>
+          <div class="job-company">ICSRED</div>
+          <div class="job-role">BackHaul (Telefónica) · Mesa de entrada y ayuda nivel 1</div>
+          <div class="job-desc">Configuración y puesta en gestión de equipos Huawei de última milla en entorno U2000. Armado de scripts para alta de equipos PTN/ATN910/950 en la red Backhaul, configuración de puertos E1/Ethernet/óptico y servicios de RBs 2G/3G/4G. Integración de equipos NE/NEX/NEX8 en anillos OSPF.</div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-date">DIC 2014 — DIC 2015</div>
+        <div>
+          <div class="job-company">Lompower · Alpha Argus LAP S.A.</div>
+          <div class="job-role">Administrador de laboratorio de electrónica</div>
+          <div class="job-desc">Reparación a nivel componente (SMD y through-hole) de fuentes rectificadoras switching Argus Alpha: Cordex, Pathfinder, XM2.</div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-date">OCT 2010 — DIC 2013</div>
+        <div>
+          <div class="job-company">Gilbarco Latinoamérica</div>
+          <div class="job-role">Técnico de campo / mesa de ayuda (ACA · YPF · ESSO)</div>
+          <div class="job-desc">Servicios de campo a nivel microinformática: recambio de PCs de puntos de venta (POS), reparación de software y hardware de equipos CEM. Armado de cableado UTP Cat5/5e/6, patcheras E1 de telefonía y racks para servidores. Mesa de ayuda nivel 1 sobre aplicaciones propias de POS.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCACION -->
+  <section id="educacion">
+    <h2 class="section-title reveal">Educación</h2>
+    <div class="sheet reveal">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="eyebrow">U3 · FORMACIÓN</div>
+      <div class="edu-row">
+        <div>
+          <div class="edu-title">Técnico Superior en Electrónica</div>
+          <div class="edu-sub">INSPT — UTN</div>
+        </div>
+        <div class="edu-year">2010</div>
+      </div>
+      <div class="edu-row">
+        <div>
+          <div class="edu-title">Profesor en Disciplinas Industriales — Especialidad Electrónica</div>
+          <div class="edu-sub">INSPT — UTN</div>
+        </div>
+        <div class="edu-year">2010</div>
+      </div>
+      <div class="edu-row">
+        <div>
+          <div class="edu-title">CCNA 1 y 2</div>
+          <div class="edu-sub">Proydesa</div>
+        </div>
+        <div class="edu-year">2007</div>
+      </div>
+      <div class="edu-row">
+        <div>
+          <div class="edu-title">Programación de PLC</div>
+          <div class="edu-sub">UTN</div>
+        </div>
+        <div class="edu-year">2008</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <h2 class="section-title reveal">Skills &amp; herramientas</h2>
+    <div class="sheet reveal">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="eyebrow">U4 · CAPACIDADES</div>
+      <div class="skill-groups">
+        <div class="skill-group">
+          <h3>Redes &amp; telecom</h3>
+          <div class="chips">
+            <div class="chip">CCNA 1 y 2</div>
+            <div class="chip">Huawei / Cisco</div>
+            <div class="chip">SDH / DWDM</div>
+            <div class="chip">Troubleshooting de red</div>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Plataformas embebidas</h3>
+          <div class="chips">
+            <div class="chip">Arduino</div>
+            <div class="chip">Raspberry Pi</div>
+            <div class="chip">PIC</div>
+            <div class="chip">ATMEL</div>
+            <div class="chip">Programación de PLC</div>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Software &amp; datos</h3>
+          <div class="chips">
+            <div class="chip">Python (básico)</div>
+            <div class="chip">Power BI</div>
+            <div class="chip">Paquete Office avanzado</div>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Virtualización</h3>
+          <div class="chips">
+            <div class="chip">Hyper-V</div>
+            <div class="chip">VirtualBox</div>
+            <div class="chip">VMware</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROYECTOS -->
+  <section id="proyectos">
+    <h2 class="section-title reveal">Proyectos</h2>
+    <div class="sheet reveal">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="eyebrow">U5 · LABORATORIO</div>
+      <div class="project-card">
+        <div class="project-tag">Plataforma embebida · En organización</div>
+        <div class="project-title">Proyecto Arduino</div>
+        <div class="project-desc">Desarrollo sobre plataforma embebida Arduino. Repositorio en proceso de reorganización profesional (README, estructura de carpetas y documentación) para publicar acá el detalle completo y el link directo al código.</div>
+        <a class="project-link" href="#contacto">Consultar por este proyecto →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <h2 class="section-title reveal">Contacto</h2>
+    <div class="sheet reveal">
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="eyebrow">U6 · CONEXIÓN</div>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <b>Email</b>
+          <a href="mailto:segundocejas2020@gmail.com">segundocejas2020@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <b>Teléfono</b>
+          <a href="tel:+541140368983">+54 11 4036-8983</a>
+        </div>
+        <div class="contact-item">
+          <b>Ubicación</b>
+          <span>Malvinas Argentinas, Buenos Aires, Argentina</span>
+        </div>
+        <div class="contact-item">
+          <b>Disponibilidad</b>
+          <span>Full time</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="titleblock reveal">
+    <div class="tb-cell"><b>Nombre</b><span>Segundo M. Cejas</span></div>
+    <div class="tb-cell"><b>Documento</b><span>Técnico en Electrónica</span></div>
+    <div class="tb-cell"><b>Rev.</b><span>2026</span></div>
+    <div class="tb-cell"><b>Hoja</b><span>1 de 1</span></div>
+  </div>
+
+</div>
+
+<footer>Segundo Maximiliano Cejas — Buenos Aires, Argentina</footer>
+
+<script>
+  // scroll reveal
+  const items = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12});
+  items.forEach(el=>io.observe(el));
+
+  // trace color picker
+  const body = document.body;
+  document.querySelectorAll('.swatch').forEach(sw=>{
+    sw.addEventListener('click', ()=>{
+      body.setAttribute('data-trace', sw.dataset.c);
+      document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
+      sw.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
